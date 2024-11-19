@@ -1,9 +1,3 @@
-#include <vector>
-#include <set>
-#include <algorithm>
-
-using namespace std;
-
 class Solution {
 public:
     long long maximumSubarraySum(vector<int>& nums, int k) {
