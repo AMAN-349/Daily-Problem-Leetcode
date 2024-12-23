@@ -29,25 +29,23 @@ public:
 private:
     // Calculate minimum swaps needed to sort an array
     int getMinSwaps(vector<int>& original) {
-        int swaps = 0;
-        vector<int> target = original;
-        sort(target.begin(), target.end());
-
-        // Map to track current positions of values
-        unordered_map<int, int> pos;
-        for (int i = 0; i < original.size(); i++) {
-            pos[original[i]] = i;
+        int swaps=0;
+        vector<int> target=original;
+        sort(target.begin(),target.end());
+        map<int,int> pos;
+        for(int i=0;i<original.size();i++)
+        {
+            pos[original[i]]=i;
         }
-
-        // For each position, swap until correct value is placed
-        for (int i = 0; i < original.size(); i++) {
-            if (original[i] != target[i]) {
+        for(int i=0;i<original.size();i++)
+        {
+            if(original[i]!=target[i])
+            {
                 swaps++;
 
-                // Update position of swapped values
-                int curPos = pos[target[i]];
-                pos[original[i]] = curPos;
-                swap(original[curPos], original[i]);
+                int currpos=pos[target[i]];
+                pos[original[i]]=currpos;
+                swap(original[currpos],original[i]);
             }
         }
         return swaps;
