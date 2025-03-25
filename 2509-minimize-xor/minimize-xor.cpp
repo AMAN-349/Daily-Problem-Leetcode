@@ -19,24 +19,23 @@ public:
 
         int ans = num1;
 
-        // Case 1: cnt2 > cnt1 → Need to add extra bits
+        
         if (cnt2 > cnt1) {
             int diff = cnt2 - cnt1;
             int i = 0;
             while (diff && i < 32) {
-                if (!(ans & (1 << i))) { // If bit is 0, set it to 1
+                if (!(ans & (1 << i))) { 
                     ans |= (1 << i);
                     diff--;
                 }
                 i++;
             }
         }
-        // Case 2: cnt1 > cnt2 → Need to remove excess bits
         else {
             int diff = cnt1 - cnt2;
             int i = 0;
             while (diff && i < 32) {
-                if (ans & (1 << i)) { // If bit is 1, clear it
+                if (ans & (1 << i)) { 
                     ans &= ~(1 << i);
                     diff--;
                 }
