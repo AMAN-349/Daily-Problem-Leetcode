@@ -1,47 +1,49 @@
 class Solution {
 public:
-    int minimizeXor(int num1, int num2) {
-        // Initialize result to num1. We will modify result.
-        int result = num1;
-
-        int targetSetBitsCount = __builtin_popcount(num2);
-        int setBitsCount = __builtin_popcount(result);
-
-        // Start with the least significant bit (bit 0).
-        int currentBit = 0;
-
-        // Add bits to result if it has fewer set bits than the target.
-        while (setBitsCount < targetSetBitsCount) {
-            // If the current bit in result is not set (0), set it to 1.
-            if (!isSet(result, currentBit)) {
-                setBit(result, currentBit);
-                setBitsCount++;
-            }
-            // Move to the next bit.
-            currentBit++;
+    int cntbits(int n) {
+        int cnt = 0;
+        while (n > 0) {
+            n = n & (n - 1);
+            cnt++;
         }
-
-        // Remove bits from result if it has more set bits than the target.
-        while (setBitsCount > targetSetBitsCount) {
-            // If the current bit in result is set (1), unset it (make it 0).
-            if (isSet(result, currentBit)) {
-                unsetBit(result, currentBit);
-                setBitsCount--;
-            }
-            // Move to the next bit.
-            currentBit++;
-        }
-
-        return result;
+        return cnt;
     }
 
-private:
-    // Helper function to check if the given bit position in x is set (1).
-    bool isSet(int x, int bit) { return x & (1 << bit); }
+    int minimizeXor(int num1, int num2) {
+        int cnt1 = cntbits(num1);
+        int cnt2 = cntbits(num2);
+        
+        if (cnt1 == cnt2) {
+            return num1;
+        }
 
-    // Helper function to set the given bit position in x to 1.
-    void setBit(int &x, int bit) { x |= (1 << bit); }
+        int ans = num1;
 
-    // Helper function to unset the given bit position in x (set it to 0).
-    void unsetBit(int &x, int bit) { x &= ~(1 << bit); }
+        // Case 1: cnt2 > cnt1 → Need to add extra bits
+        if (cnt2 > cnt1) {
+            int diff = cnt2 - cnt1;
+            int i = 0;
+            while (diff && i < 32) {
+                if (!(ans & (1 << i))) { // If bit is 0, set it to 1
+                    ans |= (1 << i);
+                    diff--;
+                }
+                i++;
+            }
+        }
+        // Case 2: cnt1 > cnt2 → Need to remove excess bits
+        else {
+            int diff = cnt1 - cnt2;
+            int i = 0;
+            while (diff && i < 32) {
+                if (ans & (1 << i)) { // If bit is 1, clear it
+                    ans &= ~(1 << i);
+                    diff--;
+                }
+                i++;
+            }
+        }
+
+        return ans;
+    }
 };
