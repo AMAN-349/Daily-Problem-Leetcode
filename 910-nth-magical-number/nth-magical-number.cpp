@@ -21,7 +21,7 @@ public:
             if (find(m, a, b) < n) {
                 l = m + 1;
             } else {
-                ans = m;
+                ans=m;
                 r = m - 1;
             }
         }
