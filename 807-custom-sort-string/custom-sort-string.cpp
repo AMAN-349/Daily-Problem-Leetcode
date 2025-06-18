@@ -1,28 +1,30 @@
 class Solution {
 public:
+
+    static bool cmp(pair<char,int> p1,pair<char,int> p2)
+    {
+        return p1.second<p2.second;
+    }
+
     string customSortString(string order, string s) {
-        std::unordered_map<char, int> charCount;
-        for (char c : order) {
-            charCount[c] = 0;
+        vector<char> f(26,INT_MAX);
+        for(int i=0;i<order.size();i++)
+        {
+            f[order[i]-'a']=i;
         }
-        
-        for (char c : s) {
-            if (charCount.find(c) != charCount.end()) {
-                charCount[c]++;
-            }
+        vector<pair<char,int>> v;
+        for(int i=0;i<s.size();i++)
+        {
+            v.push_back({s[i],f[s[i]-'a']});
         }
-        
-        std::string sortedS;
-        for (char c : order) {
-            sortedS.append(charCount[c], c);
+        sort(v.begin(),v.end(),cmp);
+        string ans="";
+        for(auto i:v)
+        {
+            ans+=i.first;
         }
+        return ans;
         
-        for (char c : s) {
-            if (charCount.find(c) == charCount.end()) {
-                sortedS.push_back(c);
-            }
-        }
-        
-        return sortedS;
+
     }
 };
