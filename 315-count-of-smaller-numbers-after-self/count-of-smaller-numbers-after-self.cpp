@@ -6,8 +6,8 @@ public:
         int c = s1;
         int i = s1;
         int j = s2;
-        vector<int> dup(e1 - s1 + 1, 0);  // tracks how many times v[i] lost to right side
-        int offset = s1;  // to shift local indices to 0-based dup array
+        vector<int> dup(e1 - s1 + 1, 0); 
+        int offset = s1;
 
         while(i <= e1 && j <= e2) {
             if(v[i].first <= v[j].first) {
@@ -18,8 +18,8 @@ public:
             }
         }
 
-        for(int k = 1; k <= e1 - s1; k++) {
-            dup[k] += dup[k - 1];
+        for(int k = s1+1; k <= e1; k++) {
+            dup[k-s1] += dup[k - s1 - 1];
         }
 
         for(int k = s1; k <= e1; ++k) {
