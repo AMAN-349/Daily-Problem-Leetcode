@@ -13,7 +13,7 @@ public:
 
         for (auto &mt : meetings) {
             long long start = mt[0], end = mt[1];
-            long long dur   = end - start;
+            long long dur = end - start;
 
             while (!meet.empty() && meet.top().first <= start) {
                 rooms.push(meet.top().second);
