@@ -28,10 +28,7 @@ public:
                 j--;
             }
             else{
-                if(cnt==0)
-                {
-                    return isPal(i,j-1,s) || isPal(i+1,j,s);
-                }
+                return isPal(i,j-1,s) || isPal(i+1,j,s);
             }
         }
         return i<j?false:true;
