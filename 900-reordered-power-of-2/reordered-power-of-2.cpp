@@ -1,16 +1,17 @@
 class Solution {
 public:
-    string getSortedString(int n) {
-        string s = to_string(n);
-        sort(s.begin(), s.end());
-        return s;
-    }
+
+    string sorted(int s)
+    {
+        string temp=to_string(s);
+        sort(temp.begin(),temp.end());
+        return temp;
+    } 
 
     bool reorderedPowerOf2(int n) {
-        string target = getSortedString(n);
-        for (int i = 0; i < 31; ++i) {
-            int power = 1 << i;
-            if (getSortedString(power) == target) return true;
+        string s = sorted(n); 
+        for (long long temp = 1; temp <= INT_MAX; temp <<= 1) {
+            if (sorted(temp) == s) return true;
         }
         return false;
     }
