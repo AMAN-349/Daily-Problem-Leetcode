@@ -1,37 +1,29 @@
 class Solution {
 public:
-    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
-        // Lambda to calculate the gain of adding an extra student
-        auto calculateGain = [](int passes, int totalStudents) {
-            return (double)(passes + 1) / (totalStudents + 1) -
-                   (double)passes / totalStudents;
-        };
 
-        // Max heap to store (-gain, passes, totalStudents)
-        priority_queue<pair<double, pair<int, int>>> maxHeap;
-        for (const auto& singleClass : classes) {
-            maxHeap.push({calculateGain(singleClass[0], singleClass[1]),
-                          {singleClass[0], singleClass[1]}});
+    double gain(int p,int t)
+    {
+        return (double)(p + 1) / (t + 1) - (double)p / t;
+    }
+
+    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {        
+        priority_queue<pair<double, pair<int,int>>> pq;
+        for (auto i : classes) {
+            pq.push({gain(i[0], i[1]), {i[0], i[1]}});
         }
-
-        // Distribute extra students
         while (extraStudents--) {
-            auto [currentGain, classInfo] = maxHeap.top();
-            maxHeap.pop();
-            int passes = classInfo.first;
-            int totalStudents = classInfo.second;
-            maxHeap.push({calculateGain(passes + 1, totalStudents + 1),
-                          {passes + 1, totalStudents + 1}});
+            auto tmp = pq.top();
+            pq.pop();
+            int pass = tmp.second.first + 1;
+            int total = tmp.second.second + 1;
+            pq.push({gain(pass, total), {pass, total}});
         }
-
-        // Calculate the final average pass ratio
-        double totalPassRatio = 0;
-        while (!maxHeap.empty()) {
-            auto [_, classInfo] = maxHeap.top();
-            maxHeap.pop();
-            totalPassRatio += (double)classInfo.first / classInfo.second;
+        double ans = 0;
+        while (!pq.empty()) {
+            auto [g, pt] = pq.top(); 
+            pq.pop();
+            ans += (double)pt.first / pt.second;
         }
-
-        return totalPassRatio / classes.size();
+        return ans / classes.size();
     }
 };
