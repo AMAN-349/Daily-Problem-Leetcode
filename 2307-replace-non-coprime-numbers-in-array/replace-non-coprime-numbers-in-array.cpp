@@ -1,5 +1,15 @@
 class Solution {
 public:
+
+    int gcd(int a,int b)
+    {
+        if(b==0)
+        {
+            return a;
+        }
+        return gcd(b,a%b);
+    }
+
     vector<int> replaceNonCoprimes(vector<int>& nums) {
         vector<int> ans;
         stack<long long> s; 
