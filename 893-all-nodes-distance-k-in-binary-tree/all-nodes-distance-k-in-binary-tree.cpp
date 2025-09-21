@@ -10,65 +10,63 @@
 class Solution {
 public:
 
-    map<TreeNode*,TreeNode*> findpar(TreeNode* root){
+    unordered_map<TreeNode*,TreeNode*> findPar(TreeNode* root)
+    {
+        unordered_map<TreeNode*,TreeNode*> ans;
         queue<TreeNode*> q;
         q.push(root);
-        map<TreeNode*,TreeNode*> m;
+
         while(!q.empty())
         {
-            TreeNode* curr=q.front();
+            TreeNode* temp=q.front();
             q.pop();
-            if(curr->left)
+            if(temp->left)
             {
-                m[curr->left]=curr;
-                q.push(curr->left);
+                ans[temp->left]=temp;
+                q.push(temp->left);
             }
-            if(curr->right)
+            if(temp->right)
             {
-                m[curr->right]=curr;
-                q.push(curr->right);
+                ans[temp->right]=temp;
+                q.push(temp->right);
             }
         }
-        return m;
+
+        return ans;
     }
 
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        map<TreeNode*,TreeNode*> m=findpar(root);
-        map<TreeNode*,bool> visited;
-        queue<TreeNode*> q;
-        q.push(target);
-        visited[target]=true;
-        int curr=0;
-        while(!q.empty())
-        {
-            int size=q.size();
-            if(curr++==k) break;
-            for(int i=0;i<size;i++)
-            {
-                TreeNode* curr=q.front();
-                q.pop();
-                if(curr->left && !visited[curr->left])
-                {
-                    q.push(curr->left);
-                    visited[curr->left]=true;
-                }
-                if(curr->right && !visited[curr->right])
-                {
-                    q.push(curr->right);
-                    visited[curr->right]=true;
-                }
-                if(m[curr] && !visited[m[curr]])
-                {
-                    q.push(m[curr]);
-                    visited[m[curr]]=true;
-                }
-            }
-        }
+        unordered_map<TreeNode*, TreeNode*> par=findPar(root);
+        unordered_map<TreeNode*, bool> vis;
+        queue<pair<TreeNode*,int>> q;
+        q.push({target,0});
+        vis[target]=true;
         vector<int> ans;
         while(!q.empty())
         {
-            ans.push_back(q.front()->val);
+            pair<TreeNode*,int> temp=q.front();
+            int chk = temp.second;
             q.pop();
+            if(chk==k)
+            {
+                ans.push_back(temp.first->val);
+            }
+
+            if(temp.first->left && chk<k && !vis[temp.first->left])
+            {
+                q.push({temp.first->left,temp.second+1});
+                vis[temp.first->left]=true;
+            }
+            if(temp.first->right && chk<k && !vis[temp.first->right])
+            {
+                q.push({temp.first->right,temp.second+1});
+                vis[temp.first->right]=true;
+            }
+            if(par[temp.first] && chk<k && !vis[par[temp.first]])
+            {
+                q.push({par[temp.first], temp.second+1});
+                vis[par[temp.first]]=true;
+            }
         }
         return ans;
     }
