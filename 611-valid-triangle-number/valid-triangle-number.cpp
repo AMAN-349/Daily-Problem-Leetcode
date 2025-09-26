@@ -6,15 +6,12 @@ public:
         int n=nums.size();
         for(int i=0;i<n;i++)
         {
+            if (nums[i] == 0) continue;
             for(int j=i+1;j<n;j++)
             {
-                for(int k=j+1;k<n;k++)
-                {
-                    if(nums[i]+nums[j]>nums[k])
-                    {
-                        ans++;
-                    }
-                }
+                int pos=nums[i]+nums[j];
+                int res=lower_bound(nums.begin()+j,nums.end(),pos)-nums.begin();
+                ans+=res-j-1;
             }
         }
         return ans;
