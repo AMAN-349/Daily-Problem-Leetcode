@@ -2,8 +2,8 @@ class Solution {
 public:
     int maxIncreasingSubarrays(vector<int>& nums) {
         int n=nums.size();
-        vector<int> pre(n,0);
-        vector<int> post(n,0);
+        vector<int> pre(n,1);
+        vector<int> post(n,1);
         for(int i=1;i<n;i++)
         {
             if (nums[i] > nums[i - 1])
@@ -25,6 +25,6 @@ public:
             int len2=post[i];
             ans=max(ans,min(len1,len2));
         }
-        return ans+1;
+        return ans;
     }
 };
