@@ -12,7 +12,6 @@ public:
                 break;
             }
         }
-        if(start!=n)
         start=i;
         end=start;
         i++;
