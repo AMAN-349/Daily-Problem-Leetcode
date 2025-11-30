@@ -1,29 +1,28 @@
 class Solution {
 public:
     int minSubarray(vector<int>& nums, int p) {
-        //here we want (sum-k)%p==0
-        //so sum%p=k%p
-        //means we have to find minimum subarray of mod sum%p
         int n=nums.size();
+        long long sum=accumulate(nums.begin(),nums.end(),0LL);
+        int tofind=sum%p;
+        if(tofind==0)
+        {
+            return 0;
+        }
         map<int,int> m;
         m[0]=-1;
-        long long sum=accumulate(nums.begin(),nums.end(),0LL);
-        if(sum%p==0) return 0;
-        int tofind=sum%p;
-        int ans=INT_MAX;
-        int temp=0;
+        int presum=0;
+        int ans=n;
         for(int i=0;i<n;i++)
         {
-            temp=(temp+nums[i])%p;
-            int target=(temp-tofind+p)%p;
-            if(m.count(target))
+            presum=(presum+nums[i])%p;
+            int curr=(presum-tofind+p)%p;
+            if(m.find(curr)!=m.end())
             {
-                ans=min(ans,i-m[target]);
+                ans=min(ans,i-m[curr]);
             }
-            m[temp]=i;
-            
+            m[presum]=i;
         }
-        if(ans==INT_MAX || ans==n) return -1;
+        if(ans==n) return -1;
         return ans;
     }
 };
