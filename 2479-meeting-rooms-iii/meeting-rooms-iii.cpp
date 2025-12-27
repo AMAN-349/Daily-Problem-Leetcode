@@ -1,42 +1,52 @@
 class Solution {
 public:
+    static bool cmp(vector<int>& a, vector<int>& b) {
+        return a[0] < b[0];
+    }
+
     int mostBooked(int n, vector<vector<int>>& meetings) {
-        sort(meetings.begin(), meetings.end());
+        sort(meetings.begin(), meetings.end(), cmp);
 
-        priority_queue<int, vector<int>, greater<int>> rooms;
-        for (int i = 0; i < n; ++i) rooms.push(i);
+        vector<int> count(n, 0);
+        priority_queue<
+            pair<long long,int>,
+            vector<pair<long long,int>>,
+            greater<pair<long long,int>>
+        > busy;
 
-        using P = pair<long long,int>;                       
-        priority_queue<P, vector<P>, greater<P>> meet;
+        priority_queue<int, vector<int>, greater<int>> freeRooms;
 
-        vector<long long> cnt(n, 0);                          
+        for (int i = 0; i < n; i++)
+            freeRooms.push(i);
 
-        for (auto &mt : meetings) {
-            long long start = mt[0], end = mt[1];
-            long long dur = end - start;
+        for (auto &m : meetings) {
+            long long start = m[0];
+            long long end = m[1];
+            long long duration = end - start;
 
-            while (!meet.empty() && meet.top().first <= start) {
-                rooms.push(meet.top().second);
-                meet.pop();
+            while (!busy.empty() && busy.top().first <= start) {
+                freeRooms.push(busy.top().second);
+                busy.pop();
             }
 
-            if (!rooms.empty()) {
-                int room = rooms.top(); rooms.pop();
-                cnt[room]++;                                  
-                meet.emplace(end, room);
+            if (!freeRooms.empty()) {
+                int room = freeRooms.top();
+                freeRooms.pop();
+                count[room]++;
+                busy.push({end, room});
             } else {
-                auto [earliestEnd, room] = meet.top(); 
-                meet.pop();
-                cnt[room]++;
-                meet.emplace(earliestEnd + dur, room);       
+                auto [freeTime, room] = busy.top();
+                busy.pop();
+                count[room]++;
+                busy.push({freeTime + duration, room});
             }
         }
 
-        int best = 0;
-        for (int i = 1; i < n; ++i)
-            if (cnt[i] > cnt[best] ||                        
-               (cnt[i] == cnt[best] && i < best))            
-                best = i;
-        return best;
+        int ans = 0;
+        for (int i = 1; i < n; i++) {
+            if (count[i] > count[ans])
+                ans = i;
+        }
+        return ans;
     }
 };
