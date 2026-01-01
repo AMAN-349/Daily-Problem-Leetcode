@@ -12,27 +12,21 @@
 class Solution {
 public:
 
-    void find(TreeNode* root,string temp,vector<string>& ans)
+    void find(TreeNode* root,string& temp,vector<string>& ans)
     {
+        int len=temp.size();
         if(!root)
         {
             return;
         }
-        if(temp.size()==0)
-        {
-            temp+=to_string(root->val);
-        }
-        else{
-            temp+="->";
-            temp+=to_string(root->val);
-        }
+        if(!temp.empty()) temp += "->";
+        temp+=to_string(root->val);
         if(!root->left && !root->right){
             ans.push_back(temp);
         }
         find(root->left,temp,ans);
         find(root->right,temp,ans);
-        temp.pop_back();
-
+        temp.resize(len);
     }
 
     vector<string> binaryTreePaths(TreeNode* root) {
