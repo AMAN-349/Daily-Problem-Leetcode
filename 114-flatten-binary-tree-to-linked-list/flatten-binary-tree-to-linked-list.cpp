@@ -11,28 +11,23 @@
  */
 class Solution {
 public:
-
-    TreeNode* find(TreeNode* root)
-    {
-        if(!root)
-        {
-            return nullptr;
-        }
-        TreeNode* temp2=root->right;
-        root->right=find(root->left);
-        root->left = nullptr;
-        TreeNode* temp=root;
-        while(temp->right)
-        {
-            temp=temp->right;
-        }
-        temp->right=find(temp2);
-        return root;
-
-
-    }
-
     void flatten(TreeNode* root) {
-        root=find(root);
+        //we do in O(n) time and o(n) space;
+        TreeNode* curr=root;
+        while(curr!=NULL)
+        {
+            if(curr->left!=NULL)
+            {
+                TreeNode* prev=curr->left;
+                while(prev->right!=NULL)
+                {
+                    prev=prev->right;
+                }
+                prev->right=curr->right;
+                curr->right=curr->left;
+                curr->left = NULL;
+            }
+            curr=curr->right;
+        }
     }
 };
