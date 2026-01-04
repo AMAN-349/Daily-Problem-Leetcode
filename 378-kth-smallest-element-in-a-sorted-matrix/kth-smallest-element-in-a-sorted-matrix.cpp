@@ -1,61 +1,42 @@
 class Solution {
 public:
 
-    int findmin(vector<vector<int>>& v)
-{
-    int ans=INT_MAX;
-    int n=v.size();
-    for(int i=0;i<n;i++)
+    int find(int m,vector<vector<int>>& v)
     {
-        ans=min(ans,v[i][0]);
-    }
-    return ans;
-}
-
-int findmax(vector<vector<int>>& v)
-{
-    int ans=INT_MIN;
-    int n=v.size();
-    for(int i=0;i<n;i++)
-    {
-        ans=max(ans,v[i][n-1]);
-    }
-    return ans;
-}
-
-int count(vector<vector<int>>& v,int m)
-{
-    int ans=0;
-    for(auto i:v)
-    {
-        ans+=upper_bound(i.begin(),i.end(),m)-i.begin();
-    }
-    return ans;
-}
-
-
-    int kthSmallest(vector<vector<int>>& v, int k) {
-        int l=findmin(v);
-    int r=findmax(v);
-    while(l<=r)
-    {
-        int m=(l+r)/2;
-        int temp=count(v,m);
-        if(temp<k)
+        int ans=0;
+        for(auto i:v)
         {
-            l=m+1;
+            ans+=upper_bound(i.begin(),i.end(),m)-i.begin();
         }
-        else{
-            if(count(v,m-1)<k)
+        return ans;
+
+    }
+
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int mini=INT_MAX;
+        int maxi=INT_MIN;
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            mini=min(mini,matrix[i][0]);
+            maxi=max(maxi,matrix[i][m-1]);
+        }
+
+        while(mini<=maxi)
+        {
+            int m=(mini+maxi)/2;
+            if(find(m,matrix)<k)
             {
-                return m;
+                mini=m+1;
             }
             else{
-                r=m-1;
+                ans=m;
+                maxi=m-1;
             }
         }
-        
-    }
-    return -1;
+        return ans;
+
     }
 };
