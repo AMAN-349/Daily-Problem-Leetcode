@@ -1,42 +1,34 @@
 class Solution {
 public:
     int shortestSubarray(vector<int>& nums, int k) {
-        int n = nums.size();
+        //here we required the priority queue as value can be negative
 
-        // Initialize result to the maximum possible integer value
-        int shortestSubarrayLength = INT_MAX;
-
-        long long cumulativeSum = 0;
-
-        // Min-heap to store cumulative sum and its corresponding index
-        priority_queue<pair<long long, int>, vector<pair<long long, int>>,
-                       greater<>>
-            prefixSumHeap;
-
-        // Iterate through the array
-        for (int i = 0; i < n; i++) {
-            // Update cumulative sum
-            cumulativeSum += nums[i];
-
-            // If cumulative sum is already >= k, update shortest length
-            if (cumulativeSum >= k) {
-                shortestSubarrayLength = min(shortestSubarrayLength, i + 1);
+        deque<pair<long long,int>> dq;
+        int n=nums.size();
+        int ans=INT_MAX;
+        long long sum=0;
+        for(int i=0;i<n;i++)
+        {
+            sum+=(1LL*nums[i]);
+            if(sum>=k)
+            {
+                ans=min(ans,i+1);
             }
-
-            // Remove subarrays from heap that can form a valid subarray
-            while (!prefixSumHeap.empty() &&
-                   cumulativeSum - prefixSumHeap.top().first >= k) {
-                // Update shortest subarray length
-                shortestSubarrayLength =
-                    min(shortestSubarrayLength, i - prefixSumHeap.top().second);
-                prefixSumHeap.pop();
+            while(!dq.empty() && sum-dq.front().first>=k)
+            {
+                ans=min(ans,i-dq.front().second);
+                dq.pop_front();
             }
-
-            // Add current cumulative sum and index to heap
-            prefixSumHeap.emplace(cumulativeSum, i);
+            if(dq.empty())
+            {
+                dq.push_back({sum,i});
+            }
+            while(!dq.empty() && dq.back().first>=sum)
+            {
+                dq.pop_back();
+            }
+            dq.push_back({sum,i});
         }
-
-        // Return -1 if no valid subarray found
-        return shortestSubarrayLength == INT_MAX ? -1 : shortestSubarrayLength;
+        return ans==INT_MAX?-1:ans;
     }
 };
