@@ -2,11 +2,10 @@ class Solution {
 public:
     int characterReplacement(string s, int k) {
         int n=s.size();
-        int j=0;
-        int i=0;
-        map<char,int> m;
-        int maxfreq=0;
         int ans=0;
+        unordered_map<int,int> m;
+        int maxfreq=0;
+        int i=0;
         for(int j=0;j<n;j++)
         {
             m[s[j]]++;
