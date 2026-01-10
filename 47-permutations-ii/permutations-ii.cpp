@@ -29,8 +29,9 @@ public:
                 find(i+1,n,temp,ans);
                 //left rotate
                 leftrotate(i,j,temp);
+                m[temp[j]]++;
             }
-            m[temp[j]]++;
+            //m[temp[j]]++;
         }
     }
 
