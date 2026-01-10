@@ -1,28 +1,43 @@
 class Solution {
 public:
 
-    vector<vector<int>> find(int i,vector<int>& nums, vector<vector<int>>& ans)
+    void rightrotate(int i,int j,vector<int>& temp) {
+        int num = temp[j];
+        for(int k = j-1; k >= i; k--) temp[k+1] = temp[k];
+        temp[i] = num;
+    }
+
+    void leftrotate(int i,int j,vector<int>& temp) {
+        int num = temp[i];
+        for(int k = i+1; k <= j; k++) temp[k-1] = temp[k];
+        temp[j] = num;
+    }
+
+    void find(int i,int n,vector<int>& temp,vector<vector<int>>& ans)
     {
-        if(i==nums.size()-1)
+        if(i==n-1)
         {
-            ans.push_back(nums);
-            return ans;
+            ans.push_back(temp);
+            return;
         }
-        vector<int> temp(20,0);
-        for(int idx=i;idx<nums.size();idx++)
+        unordered_map<char,int> m;
+        for(int j=i;j<n;j++)
         {
-            if(!temp[nums[idx]+10]){
-                temp[nums[idx]+10]=1;
-            swap(nums[i],nums[idx]);
-            find(i+1,nums,ans);
-            swap(nums[i],nums[idx]);
+            if(m[temp[j]]==0){
+                //right rotate
+                rightrotate(i,j,temp);
+                find(i+1,n,temp,ans);
+                //left rotate
+                leftrotate(i,j,temp);
             }
+            m[temp[j]]++;
         }
-        return ans;
     }
 
     vector<vector<int>> permuteUnique(vector<int>& nums) {
+        int n=nums.size();
         vector<vector<int>> ans;
-        return find(0,nums,ans);
+        find(0,n,nums,ans);
+        return ans;
     }
 };
