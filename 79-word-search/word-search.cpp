@@ -1,50 +1,61 @@
 class Solution {
 public:
+    int delrow[4]={-1,0,1,0};
+    int delcol[4]={0,1,0,-1};
+    int n,m;
 
-    int n, m;
-
-    bool issafe(int i, int j) {
-        return (i >= 0 && i < n && j >= 0 && j < m);
+    bool isValid(int r,int c)
+    {
+        return r>=0 && r<n && c>=0 && c<m;
     }
 
-    bool find(int i, int j, vector<vector<char>>& board, string word, vector<vector<bool>>& visited, int k) {
-        if (k == word.size()) {
-            return true;
-        }
-
-        if (!issafe(i, j) || visited[i][j] || board[i][j] != word[k]) {
+    bool dfs(int i,int j,int n,int m,string word,vector<vector<char>>& board,int k,vector<vector<bool>>& vis)
+    {
+        if(board[i][j] != word[k])
             return false;
-        }
-
-        visited[i][j] = true;
-
-        // Try all four directions
-        if (find(i + 1, j, board, word, visited, k + 1) ||
-            find(i - 1, j, board, word, visited, k + 1) ||
-            find(i, j + 1, board, word, visited, k + 1) ||
-            find(i, j - 1, board, word, visited, k + 1)) {
+        
+        if(k == word.size() - 1)
             return true;
-        }
 
-        visited[i][j] = false; // backtrack
+        vis[i][j] = true;
+
+        for(int w=0;w<4;w++)
+        {
+            int nrow=i+delrow[w];
+            int ncol=j+delcol[w];
+
+            if(isValid(nrow,ncol) && !vis[nrow][ncol])
+            {
+                if(dfs(nrow,ncol,n,m,word,board,k+1,vis))
+                {
+                    return true;
+                }
+            }
+        }
+        vis[i][j]=false;
         return false;
+
     }
 
     bool exist(vector<vector<char>>& board, string word) {
-        n = board.size();
-        m = board[0].size();
+        n=board.size();
+        m=board[0].size();
+
 
         vector<vector<bool>> visited(n, vector<bool>(m, false)); 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (board[i][j] == word[0]) {
-                    if (find(i, j, board, word, visited, 0)) {
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(board[i][j]==word[0])
+                {
+                    if(dfs(i,j,n,m,word,board,0,visited))
+                    {
                         return true;
                     }
                 }
             }
         }
-
         return false;
     }
 };
