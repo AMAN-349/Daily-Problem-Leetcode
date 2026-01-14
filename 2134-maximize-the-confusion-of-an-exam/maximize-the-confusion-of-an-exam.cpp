@@ -15,6 +15,7 @@ public:
             {
                 if(m[answerKey[i]])
                 m[answerKey[i]]--;
+                maxfreq=max(maxfreq,m[answerKey[i]]);
                 i++;
             }
             ans=max(ans,j-i+1);
