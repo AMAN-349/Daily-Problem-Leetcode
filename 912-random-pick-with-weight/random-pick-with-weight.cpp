@@ -1,20 +1,20 @@
 class Solution {
 public:
-    vector<int> s;
+    vector<int> v;
+    int n;
     Solution(vector<int>& w) {
-        for (int ind : w){
-            if(s.empty())
-                s.push_back(ind);
-            else
-                s.push_back(ind + s.back());
+        n=w.size();
+        v.push_back(w[0]);
+        for(int i=1;i<n;i++)
+        {
+            v.push_back(v[i-1]+w[i]);
         }
     }
     
     int pickIndex() {
-        int x = s.back();
-        int index = rand() % x;
-        auto it = upper_bound(s.begin(), s.end(),index);
-        return it - s.begin();
+        int sum=v.back();
+        int ind=rand()%sum;
+        return upper_bound(v.begin(),v.end(),ind)-v.begin();   
     }
 };
 
