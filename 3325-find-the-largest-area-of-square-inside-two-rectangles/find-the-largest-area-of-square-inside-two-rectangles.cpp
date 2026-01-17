@@ -22,8 +22,8 @@ public:
                 {
                     continue;
                 }
-                int x_overlap = min(topRight[i][0],topRight[j][0]) - max(bottomLeft[i][0],bottomLeft[j][0]);
-                int y_overlap = min(topRight[i][1],topRight[j][1]) - max(bottomLeft[i][1],bottomLeft[j][1]);
+                int x_overlap=min(nx2,x2)-max(nx1,x1);
+                int y_overlap=min(ny2,y2)-max(ny1,y1);
 
                 ans=min(x_overlap,y_overlap);
                 res=max(res,1LL*ans*ans);
