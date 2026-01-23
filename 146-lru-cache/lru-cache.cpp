@@ -1,5 +1,4 @@
-class LRUCache {
-    struct Node {
+struct Node {
         int key;
         int val;
         Node* prev;
@@ -7,6 +6,8 @@ class LRUCache {
 
         Node(int key, int val) : key(key) , val(val) , prev(nullptr), next(nullptr){}
     };
+
+class LRUCache {
 
 public:
     int maxcap, currcap = 0;
