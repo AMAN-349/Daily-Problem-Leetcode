@@ -2,23 +2,54 @@ class Solution {
 public:
     int minimumDifference(vector<int>& nums, int k) {
         int n=nums.size();
-        if(n==1) return 0;
-        sort(nums.begin(),nums.end());
-        int mini=INT_MAX;
-        int maxi=INT_MIN;
         int ans=INT_MAX;
-        k--;
-        for(int j=k;j<n;j++)
+        sort(nums.begin(),nums.end());
+        if(n==1) return 0;
+        deque<int> dq;
+        vector<int> mini;
+        vector<int> maxi;
+
+        for(int i=0;i<n;i++)
         {
-            mini=INT_MAX;
-            maxi=INT_MIN;
-            for(int i=j-k;i<=j;i++)
+            if(!dq.empty() && dq.front()<=i-k)
             {
-                mini=min(mini,nums[i]);
-                maxi=max(maxi,nums[i]);
+                dq.pop_front();
             }
-            ans=min(ans,maxi-mini);
+            while(!dq.empty() && nums[i]>=nums[dq.back()])
+            {
+                dq.pop_back();
+            }
+            dq.push_back(i);
+            if (i >= k - 1)
+            maxi.push_back(nums[dq.front()]);
         }
+        while(!dq.empty())
+        {
+            dq.pop_front();
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            if(!dq.empty() && dq.front()<=i-k)
+            {
+                dq.pop_front();
+            }
+            while(!dq.empty() && nums[i]<=nums[dq.back()])
+            {
+                dq.pop_back();
+            }
+            dq.push_back(i);
+            if (i >= k - 1)
+            mini.push_back(nums[dq.front()]);
+        }
+
+        for(int i=0;i<maxi.size();i++)
+        {
+            cout<<maxi[i]<<" ";
+            cout<<mini[i]<<" ";
+            ans=min(ans,maxi[i]-mini[i]);
+        }
+
         return ans;
         
     }
