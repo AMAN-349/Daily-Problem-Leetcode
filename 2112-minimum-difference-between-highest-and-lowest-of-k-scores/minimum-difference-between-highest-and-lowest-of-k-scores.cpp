@@ -45,8 +45,6 @@ public:
 
         for(int i=0;i<maxi.size();i++)
         {
-            cout<<maxi[i]<<" ";
-            cout<<mini[i]<<" ";
             ans=min(ans,maxi[i]-mini[i]);
         }
 
