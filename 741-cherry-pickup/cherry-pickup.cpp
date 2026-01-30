@@ -23,25 +23,19 @@ public:
         int q1=grid[r1][c1];
         int q2=grid[r2][c2];
         int cherry=0;
-        if(r1==r2 && c1==c2)
-        {
-            cherry+=grid[r1][c1];
-            //grid[r1][c1]=0;
-        }
-        else{
-            cherry+=grid[r1][c1];
-            //grid[r1][c1]=0;
-            cherry+=grid[r2][c2];
-            //grid[r2][c2]=0;
-        }
+        cherry+=grid[r1][c1];
+        grid[r1][c1]=0;
+        cherry+=grid[r2][c2];
+        grid[r2][c2]=0;
+        
         int ans=0;
         int p1p2down=find(r1+1,c1,r2+1,c2,grid);
         int p1p2right=find(r1,c1+1,r2,c2+1,grid);
         int p1rightp2down=find(r1,c1+1,r2+1,c2,grid);
         int p1downp2right=find(r1+1,c1,r2,c2+1,grid);
 
-        //grid[r1][c1]=q1;
-        //grid[r2][c2]=q2;
+        grid[r1][c1]=q1;
+        grid[r2][c2]=q2;
 
         int sum=max({p1p2down,p1p2right,p1rightp2down,p1downp2right});
         if(sum==INT_MIN)
