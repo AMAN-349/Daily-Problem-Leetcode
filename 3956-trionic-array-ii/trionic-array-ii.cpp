@@ -2,21 +2,29 @@ class Solution {
 public:
     long long res=LLONG_MIN;
     vector<long long> prefix;
-    vector<long long> incL;
-    vector<long long> incR;
-    
     long long find(int p1, int p2, int p3, int p, vector<int>& nums)
     {
         int l = p - p1 + 1;
         int q = p + p2 - 1;
         int r = q + p3 - 1;
 
+        cout<<l<<" "<<q<<" "<<r<<" ";
+
         long long ans = 0;
         long long temp=0;
         long long left=LLONG_MIN;
-        ans=incL[p-1]+nums[p];
+        for (int i = p-1; i >=l; i--){
+            temp += nums[i];
+            left=max(left,temp);
+        }
+        ans=left+nums[p];
+
         ans+=prefix[q]-prefix[p];
-        ans+=incR[q+1];
+
+        for (int i = q + 1; i <= r; i++){
+            ans += nums[i];
+            res=max(res,ans);
+        }
 
         return ans;
     }
@@ -29,26 +37,6 @@ public:
         vector<int> prefinc;
         vector<int> suffinc(n,1);
         vector<int> suffdec(n,1);
-
-        incL.resize(n,0);
-        incR.resize(n,0);
-
-        incL[0] = nums[0];
-        for(int i=1;i<n;i++){
-            if(nums[i] > nums[i-1])
-                incL[i] = max(nums[i]*1LL,incL[i-1] + nums[i]);
-            else
-                incL[i] = nums[i];
-        }
-
-        incR[n-1] = nums[n-1];
-        for(int i=n-2;i>=0;i--){
-            if(nums[i] < nums[i+1])
-                incR[i] = max(incR[i+1] + nums[i],nums[i]*1LL);
-            else
-                incR[i] = nums[i];
-        }
-
 
         prefix[0]=nums[0];
         for(int i=1;i<n;i++)
