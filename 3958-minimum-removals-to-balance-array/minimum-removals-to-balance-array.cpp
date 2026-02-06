@@ -4,16 +4,16 @@ public:
         int n=nums.size();
         sort(nums.begin(),nums.end());
         int ans=0;
-        for(int i=0;i<n;i++)
+        int l=0;
+        int r=upper_bound(nums.begin(),nums.end(),nums[0])-nums.begin();
+        ans=max(ans,r-l);
+        while(r<n)
         {
-            int l=i;
-            long long temp=1LL*nums[l]*k;
-            int r=upper_bound(nums.begin(),nums.end(),temp)-nums.begin();
-            if(r==n)
+            while(1LL*nums[l]*k<nums[r])
             {
-                ans=max(ans,r-l);
-                break;
+                l++;
             }
+            r++;
             ans=max(ans,r-l);
         }
         return n-ans;
