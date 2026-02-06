@@ -9,6 +9,11 @@ public:
             int l=i;
             long long temp=1LL*nums[l]*k;
             int r=upper_bound(nums.begin(),nums.end(),temp)-nums.begin();
+            if(r==n)
+            {
+                ans=max(ans,r-l);
+                break;
+            }
             ans=max(ans,r-l);
         }
         return n-ans;
