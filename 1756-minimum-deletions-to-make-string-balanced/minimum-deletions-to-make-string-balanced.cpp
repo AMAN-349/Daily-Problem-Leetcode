@@ -2,20 +2,20 @@ class Solution {
 public:
     int minimumDeletions(string s) {
         int n=s.size();
-        vector<int> f(n+1,0);
-        int b=0;
-        for(int i=1;i<=n;i++)
+        stack<char> st;
+        int cnt=0;
+        for(int i=0;i<n;i++)
         {
-            if(s[i-1]=='b')
+            if(!st.empty() && st.top()=='b' && s[i]=='a')
             {
-                f[i]=f[i-1];
-                b++;
+                st.pop();
+                cnt++;
             }
             else{
-                f[i]=min(f[i-1]+1,b);
+                st.push(s[i]);
             }
         }
-        return f[n];
+        return cnt;
 
     }
 };
