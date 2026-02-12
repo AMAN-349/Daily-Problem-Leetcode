@@ -14,7 +14,7 @@ public:
                 prod/=nums[l];
                 l++;
             }
-            if(r>=l)
+            // if(r>=l)
             ans+=(r-l+1);
             r++;
         }
