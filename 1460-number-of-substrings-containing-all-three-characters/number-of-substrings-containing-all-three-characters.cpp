@@ -1,43 +1,42 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        unordered_map<char,int> m;
         int n=s.size();
-        if(n<3)
-        {
-            return 0;
-        }
-        int j=0;
-        int i=0;
+        int l=0;
+        int r=-1;
+        int cnta=0;
+        int cntb=0;
+        int cntc=0;
         int ans=0;
-        while(m.size()<3 && i<n)
+        while(r<n)
         {
-            m[s[i]]++;
-            i++;
-        }
-        if(m.size()<3)
-        {
-            return 0;
-        }
-        ans+=(n-i+1);
-        cout<<ans<<" ";
-        while(j<=n-3)
-        {
-            m[s[j]]--;
-            if(m[s[j]]==0)
-            {
-                m.erase(s[j]);
+            while((cnta==0 || cntb==0 || cntc==0) && r<n){
+                r++;
+                if(s[r]=='a')
+                {
+                    cnta++;
+                }
+                else if(s[r]=='b')
+                {
+                    cntb++;
+                }
+                else{
+                    cntc++;
+                }
             }
-            while(m.size()<3 && i<n)
+            ans+=(n-r);
+            if(s[l]=='a')
             {
-                m[s[i]]++;
-                i++;
+                cnta--;
             }
-            if(m.size()==3)
+            else if(s[l]=='b')
             {
-                ans+=(n-i+1);
+                cntb--;
             }
-            j++;
+            else{
+                cntc--;
+            }
+            l++;
         }
         return ans;
     }
