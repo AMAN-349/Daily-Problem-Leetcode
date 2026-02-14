@@ -11,7 +11,8 @@ public:
             {
                 if(v[i]>1.0)
                 {
-                    double rem=(double)(v[i]-1)/2.0;
+                    v[i]--;
+                    double rem=(double)(v[i])/2.0;
                     nextrow[i]+=rem;
                     nextrow[i+1]+=rem;
                 }
