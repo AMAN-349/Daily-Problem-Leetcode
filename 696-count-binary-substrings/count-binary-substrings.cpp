@@ -11,7 +11,6 @@ public:
             prevcnt++;
             r++;
         }
-        cout<<prevcnt<<" ";
         while(r<n)
         {
             int currcnt=0;
@@ -21,7 +20,6 @@ public:
                 currcnt++;
                 r++;
             }
-            cout<<currcnt<<" ";
             ans+=min(prevcnt,currcnt);
             prevcnt=currcnt;
             find=next;
