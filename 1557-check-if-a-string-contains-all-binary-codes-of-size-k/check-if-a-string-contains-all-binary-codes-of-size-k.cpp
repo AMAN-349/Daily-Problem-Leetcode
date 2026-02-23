@@ -8,7 +8,7 @@ public:
         {
             if (s[i] == '1')
             {
-                temp |= (1LL << i);
+                temp|=(1<<i);
             }
         }
         return temp;
