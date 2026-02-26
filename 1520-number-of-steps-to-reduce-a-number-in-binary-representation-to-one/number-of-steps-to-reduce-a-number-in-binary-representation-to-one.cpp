@@ -1,41 +1,78 @@
 class Solution {
 public:
-    int numSteps(string s) {
-        int n = s.size();
-        int l = 0;              // ← you never really need l, but I’ll keep it
-        int r = n - 1;
-        int ans = 0;
 
-        while (s.size() != 1) {
-            if (s[r] == '0') {          
-                s.pop_back();           
-                r--;
+    bool check(string s)
+    {
+        int n=s.size();
+        for(int i=0;i<n-1;i++)
+        {
+            if(s[i]=='1')
+            {
+                return false;
             }
-            else {
-                int carry = 0;
+        }
+        return s[n-1]=='1';
+    }
 
-                for (int j = r; j >= l; ) {
-                    if (s[j] == '1') {  
-                        s[j] = '0';     
-                        carry = 1;
-                        j--;           
-                    } else {
-                        s[j] = '1';
-                        carry = 0;
-                        j--;           
-                        break;
+    int numSteps(string s) {
+        int n=s.size();
+        int cnt=1;
+        if(check(s))
+        {
+            return 0;
+        }
+        while(true)
+        {
+            n=s.size();
+            if(s[n-1]=='1')
+            {
+                string temp="";
+                int i=n-1;
+                int ind=-1;
+                while(i>=0 && s[i]=='1')
+                {
+                    ind=i;
+                    i--;
+                }
+                if(ind<=0)
+                {
+                    string temp="";
+                    temp+="1";
+                    for(int i=0;i<n;i++)
+                    {
+                        temp+="0";
+                    }
+                    s=temp;
+                }
+                else{
+                    s[ind-1]='1';
+                    for(int j=ind;j<n;j++)
+                    {
+                        s[j]='0';
                     }
                 }
-
-                if (carry == 1) {
-                    s = '1' + s;        
-                    r++;               
+                if(check(s))
+                {
+                    return cnt;
                 }
+                cout<<s;
+                cout<<endl;
             }
-
-            ans++;
+            else{
+                for(int i=n-2;i>=0;i--)
+                {
+                    s[i+1]=s[i];
+                }
+                s[0]='0';
+                if(check(s))
+                {
+                    return cnt;
+                }
+                cout<<s;
+                cout<<endl;
+            }
+            cnt++;
         }
-
-        return ans;
+        return cnt;
     }
 };
