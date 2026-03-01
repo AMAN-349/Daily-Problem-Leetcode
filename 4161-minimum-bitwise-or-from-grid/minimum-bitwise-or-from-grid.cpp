@@ -4,7 +4,7 @@ public:
         int ans = 0;
         int forbidden = 0;
         
-        for (int bit = 31; bit >= 0; --bit) {
+        for (int bit = 17; bit >= 0; --bit) {
             int testForbidden = forbidden | (1 << bit);            
             bool possible = true;
 
