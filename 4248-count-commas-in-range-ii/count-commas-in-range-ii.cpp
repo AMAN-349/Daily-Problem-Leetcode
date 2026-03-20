@@ -7,7 +7,6 @@ public:
         {
             ans+=((n/i)-1)*i;
             ans+=(n%i)+1;
-            comma++;
         }
         return ans;
     }
