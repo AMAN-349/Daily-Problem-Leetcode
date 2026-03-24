@@ -33,14 +33,8 @@ public:
         {
             for(int j=0;j<m;j++)
             {
-                if(j>=0)
-                {
-                    ans[i][j]=(1LL*ans[i][j] * prefix[i][j])%mod;
-                }
-                if(j<m)
-                {
-                    ans[i][j]=(1LL*ans[i][j] * suffix[i][j+1])%mod;
-                }
+                ans[i][j]=(1LL*ans[i][j] * prefix[i][j])%mod;
+                ans[i][j]=(1LL*ans[i][j] * suffix[i][j+1])%mod;
             }
         }
 
