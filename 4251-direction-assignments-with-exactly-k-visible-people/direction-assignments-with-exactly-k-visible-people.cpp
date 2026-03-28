@@ -2,9 +2,15 @@ class Solution {
 public:
     long long mod = 1e9 + 7;
 
-    vector<long long> fact, invFact;
+    vector<long long> fact;
 
-    // fast exponentiation
+    void precompute() {
+        fact[0] = 1;
+        for (int i = 1; i < fact.size(); i++) {
+            fact[i] = (fact[i-1] * i) % mod;
+        }
+    }
+
     long long power(long long a, long long b) {
         long long res = 1;
         while (b) {
@@ -15,47 +21,45 @@ public:
         return res;
     }
 
-    // precompute factorial and inverse factorial ONCE
-    void precompute(int N) {
-        fact.resize(N + 1);
-        invFact.resize(N + 1);
+    long long findncr(long long n, long long r) {
+        long long numerator = fact[n];
+        long long denom = (fact[r] * fact[n - r]) % mod;
 
-        fact[0] = 1;
-        for (int i = 1; i <= N; i++)
-            fact[i] = fact[i - 1] * i % mod;
-
-        invFact[N] = power(fact[N], mod - 2);
-
-        for (int i = N - 1; i >= 0; i--)
-            invFact[i] = invFact[i + 1] * (i + 1) % mod;
-    }
-
-    // O(1) nCr
-    long long findncr(int n, int r) {
-        if (r < 0 || r > n) return 0;
-        return fact[n] * invFact[r] % mod * invFact[n - r] % mod;
+        return (numerator * power(denom, mod - 2)) % mod;
     }
 
     int countVisiblePeople(int n, int pos, int k) {
+        long long ans=0;
+        fact.resize(n);
+        precompute();
 
-        precompute(n);   // only up to n needed
+        if(k==0) return 2;
 
-        long long ans = 0;
+        for(int i=0;i<=k;i++)
+        {
+            int l=i;
+            int r=k-i;
+            long long res=1;
 
-        if (k == 0) return 2;
+            int cnt=0;
+            if(pos>=l)
+            {
+                if(pos-1>=0)
+                res*=findncr(pos,l);
+                cnt++;
+            }
 
-        for (int i = 0; i <= k; i++) {
-            int l = i;
-            int r = k - i;
-
-            long long res = 1;
-
-            if (pos >= l && (n - pos - 1) >= r) {
-                res = findncr(pos, l) * findncr(n - pos - 1, r) % mod;
-                ans = (ans + res) % mod;
+            if(n-pos-1>=r)
+            {
+                if(pos+1<=n)
+                res*=findncr(n-pos-1,r);
+                cnt++;
+            }
+            if(cnt==2){
+                ans=(ans%mod + res%mod)%mod;
             }
         }
 
-        return (ans * 2) % mod;
+        return (ans % mod *2 %mod)%mod;
     }
 };
