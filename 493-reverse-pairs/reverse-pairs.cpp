@@ -1,60 +1,66 @@
 class Solution {
 public:
-
-vector<int> temp;
-
-int merge(vector<int>& v, int s1, int e1, int s2, int e2)
-{
-    int c = s1;
-    int i = s1;
-    int j = s2;
-    int cnt = 0;
-    int k=s1;
-    for(int k2=s2;k2<=e2;k2++)
+    vector<int> temp;
+    int merge(int st1,int e1,int st2,int e2,vector<int>& nums)
     {
-        while(k<=e1 && (long long)v[k]<=1LL*2*v[k2])
+        int i=st1;
+        int j=st2;
+        int ind=0;
+        int cnt=0;
+        int k=st1;
+        for(int k2=st2;k2<=e2;k2++)
         {
-            k++;
+            while(k<=e1 && (long long)nums[k]<=1LL*2*nums[k2])
+            {
+                k++;
+            }
+            cnt+=(e1-k+1);
         }
-        cnt+=(e1-k+1);
+
+        while(i<=e1 && j<=e2)
+        {
+            if(nums[i]<=nums[j])
+            {
+                temp[ind++]=nums[i++];
+            }
+            else{
+                temp[ind++]=nums[j++];
+            }
+        }
+        while(i<=e1)
+        {
+            temp[ind++]=nums[i++];
+        }
+        while(j<=e2)
+        {
+            temp[ind++]=nums[j++];
+        }
+
+        for(int i = st1; i <= e2; i++)
+        {
+            nums[i] = temp[i - st1];
+        }
+
+        return cnt;
     }
 
-    while(i <= e1 && j <= e2)
+    int mergesort(int l,int r,vector<int>& nums)
     {
-        if(v[i] <= v[j])
+        int cnt=0;
+        if(l<r)
         {
-            temp[c++] = v[i++];
+            int mid=(l+r)/2;
+            cnt+=mergesort(l,mid,nums);
+            cnt+=mergesort(mid+1,r,nums);
+            cnt+=merge(l,mid,mid+1,r,nums);
         }
-        else
-        {
-            temp[c++] = v[j++];
-        }
+        return cnt;
     }
-
-    while(i <= e1) temp[c++] = v[i++];
-    while(j <= e2) temp[c++] = v[j++];
-
-    for(int k = s1; k <= e2; ++k)
-        v[k] = temp[k];
-
-    return cnt;
-}
-
-int mergesort(vector<int>& v, int l, int r)
-{
-    if(l >= r) return 0;
-
-    int m = (l + r) / 2;
-    int cnt = 0;
-    cnt += mergesort(v, l, m);
-    cnt += mergesort(v, m + 1, r);
-    cnt += merge(v, l, m, m + 1, r);
-    return cnt;
-}
 
     int reversePairs(vector<int>& nums) {
+        //here we count all the inversions
         int n=nums.size();
-        temp.assign(n, 0); 
-        return mergesort(nums, 0, n - 1);
+        temp.resize(n,0);
+        return mergesort(0,n-1,nums);
     }
 };
