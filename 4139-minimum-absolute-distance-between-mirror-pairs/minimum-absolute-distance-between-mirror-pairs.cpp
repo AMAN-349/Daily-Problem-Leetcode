@@ -31,10 +31,6 @@ public:
         {
             int curr=nums[i];
             int currev=dorev(nums[i]);
-            // if(org.find(currev)!=org.end())
-            // {
-            //     ans=min(ans,i-org[currev]);
-            // }
             if(rev.find(curr)!=rev.end())
             {
                 ans=min(ans,i-rev[curr]);
