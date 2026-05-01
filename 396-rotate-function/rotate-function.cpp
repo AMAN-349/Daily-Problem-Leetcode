@@ -33,7 +33,6 @@ public:
             temp-=(nums[i]*(n-1));
             ans=temp;
             res=max(res,ans);
-            cout<<endl;
         }
         return res;
     }
