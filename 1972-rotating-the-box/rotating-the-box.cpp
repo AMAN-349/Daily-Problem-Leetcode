@@ -1,44 +1,59 @@
 class Solution {
 public:
-    vector<vector<char>> rotateTheBox(vector<vector<char>>& box) {
-        int m = box.size();
-        int n = box[0].size();
-        vector<vector<char>> result(n, vector<char>(m));
+    vector<vector<char>> rotateTheBox(vector<vector<char>>& boxGrid) {
+        int n=boxGrid.size();
+        int m=boxGrid[0].size();
+        vector<vector<char>> ans;
 
-        // Create the transpose of the input grid in `result`
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                result[i][j] = box[j][i];
-            }
-        }
-
-        // Reverse each row in the transpose grid to complete the 90° rotation
-        for (int i = 0; i < n; i++) {
-            reverse(result[i].begin(), result[i].end());
-        }
-        for (int j = 0; j < m; j++) {
-            // Process each cell in column `j` from bottom to top
-            for (int i = n - 1; i >= 0; i--) {
-                if (result[i][j] == '.') {  // Found an empty cell; check if a
-                                            // stone can fall into it
-                    int nextRowWithStone = -1;
-
-                    for (int k = i - 1; k >= 0; k--) {
-                        if (result[k][j] == '*')
-                            break;  // Obstacle blocks any stones above
-                        if (result[k][j] ==
-                            '#') {  // Stone found with no obstacles in between
-                            nextRowWithStone = k;
-                            break;
-                        }
+        for(int i=0;i<n;i++)
+        {
+            int cnt=0;
+            vector<char> temp(m,'.');
+            for(int j=0;j<m;j++)
+            {
+                if(boxGrid[i][j]=='*')
+                {
+                    temp[j]='*';
+                    int pos=j-1;
+                    while(pos>=0 && cnt>0)
+                    {
+                        temp[pos--]='#';
+                        cnt--;
                     }
-                    if (nextRowWithStone != -1) {
-                        result[nextRowWithStone][j] = '.';
-                        result[i][j] = '#';
+                    cnt=0;
+                }
+                else if(boxGrid[i][j]=='#' || j==m-1)
+                {
+                    if(boxGrid[i][j]=='#')
+                    cnt++;
+                    if(j==m-1)
+                    {
+                        int pos=j;
+                        while(pos>=0 && cnt>0)
+                        {
+                            if(temp[j]=='*')
+                            {
+                                break;
+                            }
+                            temp[pos--]='#';
+                            cnt--;
+                        }
+                        cnt=0;
                     }
                 }
             }
+            ans.push_back(temp);
         }
-        return result;
+        vector<vector<char>> res;
+        for(int i=0;i<m;i++)
+        {
+            vector<char> temp;
+            for(int j=n-1;j>=0;j--)
+            {
+                temp.push_back(ans[j][i]);
+            }
+            res.push_back(temp);
+        }
+        return res;
     }
 };
