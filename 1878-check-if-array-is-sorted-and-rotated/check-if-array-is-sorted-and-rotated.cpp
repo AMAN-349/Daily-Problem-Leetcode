@@ -36,11 +36,6 @@ public:
         {
             v2.push_back(i);
         }
-        cout<<endl;
-        for(auto i:v2)
-        {
-            cout<<i<<" ";
-        }
         for(int i=1;i<n;i++)
         {
             if(v2[i-1]>v2[i]) return false;
