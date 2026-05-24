@@ -3,17 +3,6 @@ public:
     int n;
     vector<int> dp;
 
-    int maxseg(vector<int>& arr,int start,int end)
-    {
-        if(start>end) return 0;
-        int maxi=0;
-        for(int i=start;i<=end;i++)
-        {
-            maxi=max(maxi,arr[i]);
-        }
-        return maxi;
-    }
-
     int find(int ind,vector<int>& arr,int d)
     {
         if(dp[ind]!=-1) return dp[ind];
