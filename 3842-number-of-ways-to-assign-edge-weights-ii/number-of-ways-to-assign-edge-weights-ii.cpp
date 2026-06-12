@@ -35,23 +35,17 @@ public:
     void build(int n)
     {
         table.assign(maxbit, vector<int>(n + 1, 0));
-
-        // 2^0-th ancestor
         table[0] = par;
-
-        // Binary lifting table
         for (int p = 1; p < maxbit; p++)
         {
             for (int i = 1; i <= n; i++)
             {
                 int temp = table[p - 1][i];
-                if (temp != 0)
-                    table[p][i] = table[p - 1][temp];
+                table[p][i] = table[p - 1][temp];
             }
         }
     }
 
-    // Returns LCA node
     int getLCA(int u, int v)
     {
         if (level[u] < level[v])
@@ -59,7 +53,6 @@ public:
 
         int diff = level[u] - level[v];
 
-        // Lift u to same level as v
         for (int i = maxbit - 1; i >= 0; i--)
         {
             if (diff & (1 << i))
@@ -69,7 +62,6 @@ public:
         if (u == v)
             return u;
 
-        // Lift both together
         for (int i = maxbit - 1; i >= 0; i--)
         {
             if (table[i][u] != table[i][v])
@@ -82,7 +74,6 @@ public:
         return par[u];
     }
 
-    // Returns distance between u and v
     int lca(int u, int v)
     {
         int w = getLCA(u, v);
@@ -97,8 +88,6 @@ public:
         par.assign(n + 1, 0);
         level.assign(n + 1, 0);
         adj.assign(n + 1, {});
-
-        // Build tree
         for (auto &e : edges)
         {
             int u = e[0];
@@ -106,8 +95,6 @@ public:
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
-
-        // Assume root is 1
         dfs(1, 0);
         build(n);
 
