@@ -61,11 +61,11 @@ public:
         for (char ch : directions)
         {
             if (ch == 'R')
-                col++;
-            else
                 row++;
+            else
+                row+=4;
 
-            path.push_back(row * 4 + col);
+            path.push_back(row);
         }
 
         return solve(r) - solve(l - 1);
