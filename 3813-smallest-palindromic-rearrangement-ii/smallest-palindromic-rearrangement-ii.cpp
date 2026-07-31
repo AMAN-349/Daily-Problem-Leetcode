@@ -1,13 +1,10 @@
 class Solution {
 public:
-    // FIX 1: Change k to long long
     long long ncr(int n, int r, long long k) { 
         if (r < 0 || r > n) return 0;
         
-        // FIX 2: Ensure strictly increasing intermediate values
         r = min(r, n - r); 
         
-        // FIX 3: Use __int128_t to prevent overflow during multiplication
         __int128_t ans = 1; 
         for(int i = 1; i <= r; i++) {
             ans *= (n - i + 1);
