@@ -30,32 +30,29 @@ public:
             int en=i.second.second;
             char ch=s[st];
 
+            bool valid = true;
+
             int j = st;
 
-            while(j <= en)
+            while (j <= en)
             {
-                st = min(st, m[s[j]].first);
-                en = max(en, m[s[j]].second);
+                int first = m[s[j]].first;
+                int last = m[s[j]].second;
+
+                if (first < st)
+                {
+                    valid = false;
+                    break;
+                }
+
+                en = max(en, last);
                 j++;
             }
 
-            j=st;
-            while(j <= en)
+            if (valid)
             {
-                st = min(st, m[s[j]].first);
-                en = max(en, m[s[j]].second);
-                j++;
+                v.insert({st, en});
             }
-
-            j=st;
-            while(j <= en)
-            {
-                st = min(st, m[s[j]].first);
-                en = max(en, m[s[j]].second);
-                j++;
-            }
-
-            v.insert({st,en});
         }
         for(auto i:v)
         {
