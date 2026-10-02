@@ -5,7 +5,6 @@ public:
     {
         if(open==0 && closed==0)
         {
-            cout<<"h";
             ans.push_back(temp);
             return;
         }
